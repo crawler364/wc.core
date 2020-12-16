@@ -9,7 +9,6 @@ use CIBlockElement;
 
 class Tools
 {
-
     public static function getElementByXmlId($elementXmlId, $iBlockXmlId = null)
     {
         Loader::includeModule('iblock');
