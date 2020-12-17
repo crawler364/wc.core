@@ -7,9 +7,12 @@ namespace WC\Main;
 use Bitrix\Main\Error;
 use Bitrix\Main\Web\Json;
 
-
 class Result extends \Bitrix\Main\Result
 {
+    /**
+     * @param Error|array $error
+     * @return Result
+     */
     final public function addError($error)
     {
         if (!$error instanceof Error) {
