@@ -10,10 +10,12 @@ use Bitrix\Main\Web\Json;
 
 class Result extends \Bitrix\Main\Result
 {
-
-    final public function addError(array $arError)
+    final public function addError($error)
     {
-        $error = new Error($arError['MESSAGE'], $arError['CODE'], $arError['CUSTOM_DATA']);
+        if (!$error instanceof Error) {
+            $error = new Error($error['MESSAGE'], $error['CODE'], $error['CUSTOM_DATA']);
+        }
+
         return parent::addError($error);
     }
 
