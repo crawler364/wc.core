@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Если символьный код не здан, транслетирует из названия. Проверяет код на уникальность, если не уникален пробует добавить "1".
+ * Еще раз проверяет на уникальность, если опять не уникален, меняет "1" на "2" и тд.
+ * AddEventHandler('iblock', 'OnBeforeIBlockElementAdd', [WC\IBlock\UniqueSymbolCode::class, 'constructElement']);
+ * AddEventHandler('iblock', 'OnBeforeIBlockSectionAdd', [WC\IBlock\UniqueSymbolCode::class, 'constructSection']);
+ * AddEventHandler('iblock', 'OnBeforeIBlockElementUpdate', [WC\IBlock\UniqueSymbolCode::class, 'constructElement']);
+ * AddEventHandler('iblock', 'OnBeforeIBlockSectionUpdate', [WC\IBlock\UniqueSymbolCode::class, 'constructSection']);
+ */
 
 namespace WC\IBlock;
 
@@ -31,23 +39,29 @@ class UniqueSymbolCode
 
     private static function handler(&$arFields)
     {
-        if ($arFields['NAME'] != '' && strlen($arFields['CODE']) <= 0) {
+        if ($arFields['NAME']) {
             self::$iBlockId = $arFields['IBLOCK_ID'];
-            $code = \Cutil::translit($arFields['NAME'], 'ru', self::$arParams);
+            $code = $arFields['CODE'] ?: \Cutil::translit($arFields['NAME'], 'ru', self::$arParams);
             $arFields['CODE'] = self::checkCode($code);
         }
     }
 
     private static function checkCode($code, $i = null)
     {
-        $arFilter = ['IBLOCK_ID' => self::$iBlockId, 'CODE' => $code . $i];
-        $arSelect = ['IBLOCK_ID', 'ID'];
+        $filter = ['IBLOCK_ID' => self::$iBlockId, 'CODE' => $code . $i];
+        $select = ['IBLOCK_ID', 'ID'];
         if (self::$isElem) {
-            $res = \CIBlockElement::GetList([], $arFilter, false, false, $arSelect);
+            $res = \Bitrix\Iblock\ElementTable::getList([
+                'filter' => $filter,
+                'select' => $select,
+            ]);
         } elseif (self::$isSect) {
-            $res = \CIBlockSection::GetList([], $arFilter, false, $arSelect, false);
+            $res = \Bitrix\Iblock\SectionTable::getList([
+                'filter' => $filter,
+                'select' => $select,
+            ]);
         }
-        if ($res->GetNext()) {
+        if ($res->fetch()) {
             $i++;
             return self::checkCode($code, $i);
         }
