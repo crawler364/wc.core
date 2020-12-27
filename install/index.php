@@ -28,7 +28,7 @@ class wc_main extends CModule
         $this->PARTNER_URI = Loc::getMessage('WC_MAIN_PARTNER_URI');
     }
 
-    public function DoInstall()
+    function DoInstall()
     {
         global $APPLICATION;
         $result = true;
@@ -36,7 +36,9 @@ class wc_main extends CModule
         try {
             $this->checkRequirements();
             Main\ModuleManager::registerModule($this->MODULE_ID);
-            if (!Main\Loader::includeModule($this->MODULE_ID)) {
+            if (Main\Loader::includeModule($this->MODULE_ID)) {
+                $this->InstallEvents();
+            } else {
                 throw new Main\SystemException(Loc::getMessage('WC_MAIN_MODULE_NOT_REGISTERED'));
             }
         } catch (Main\SystemException $exception) {
@@ -47,9 +49,23 @@ class wc_main extends CModule
         return $result;
     }
 
-    public function DoUninstall()
+    function DoUninstall()
     {
+        if (Main\Loader::includeModule($this->MODULE_ID)) {
+            $this->UnInstallEvents();
+        }
+
         Main\ModuleManager::unRegisterModule($this->MODULE_ID);
+    }
+
+    function InstallEvents()
+    {
+        // todo \WC\IBlock\UniqueSymbolCode
+    }
+
+    function UnInstallEvents()
+    {
+        // todo \WC\IBlock\UniqueSymbolCode
     }
 
     private function checkRequirements()
