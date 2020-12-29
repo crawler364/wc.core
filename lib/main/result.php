@@ -55,7 +55,7 @@ class Result extends \Bitrix\Main\Result
         return $this->getErrors()[0];
     }
 
-    final public function mergeResult($result)
+    final public function mergeResult(object $result)
     {
         if ($data = $result->getData()) {
             $this->setData($data);
