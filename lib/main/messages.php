@@ -13,6 +13,7 @@ class Messages
     {
         Loc::loadMessages(__FILE__);
 
+        // todo убрать
         if ($fileExt) {
             Loc::loadMessages($fileExt);
         }
