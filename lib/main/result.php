@@ -13,7 +13,7 @@ class Result extends \Bitrix\Main\Result
      * @param Error|array $error
      * @return Result
      */
-    final public function addError($error)
+    final public function addError($error): Result
     {
         if (!$error instanceof Error) {
             $error = new Error($error['MESSAGE'], $error['CODE'], $error['CUSTOM_DATA']);
