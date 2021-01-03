@@ -4,6 +4,7 @@
 namespace WC\Main;
 
 
+use Bitrix\Main\Engine\Response\AjaxJson;
 use Bitrix\Main\Error;
 use Bitrix\Main\Web\Json;
 
@@ -35,10 +36,22 @@ class Result extends \Bitrix\Main\Result
             'ERRORS' => $this->getErrors(),
         ];
 
-        $result = \WC\Main\Tools::reformatArrayKeys($result);
+        $result = Tools::reformatArrayKeys($result);
 
         echo Json::encode($result);
+
+        \CMain::FinalActions();
+        die();
     }
+
+    final public function prepareJson(): AjaxJson
+    {
+        $data = Tools::reformatArrayKeys($this->getData());
+        $isSuccess = Tools::reformatArrayKeys($this->isSuccess());
+
+        return new AjaxJson($data, $isSuccess, $this->getErrorCollection());
+    }
+
 
     final public function getDataField($field)
     {
@@ -50,7 +63,7 @@ class Result extends \Bitrix\Main\Result
         $this->isSuccess = $bool;
     }
 
-    final public function getFirstError()
+    final public function getFirstError(): Error
     {
         return $this->getErrors()[0];
     }
