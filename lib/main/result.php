@@ -6,18 +6,21 @@ namespace WC\Main;
 
 use Bitrix\Main\Engine\Response\AjaxJson;
 use Bitrix\Main\Error;
+use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Web\Json;
 
 class Result extends \Bitrix\Main\Result
 {
     /**
-     * @param Error|array $error
+     * @param Error|string $error
+     * @param array $params
      * @return Result
      */
-    final public function addError($error): Result
+    final public function addError($error, $params = []): Result
     {
         if (!$error instanceof Error) {
-            $error = new Error($error['MESSAGE'], $error['CODE'], $error['CUSTOM_DATA']);
+            $message = Loc::getMessage($error, $params['REPLASE'], $params['LANGUAGE']);
+            $error = new Error($message, $error, $params['CUSTOM_DATA']);
         }
 
         return parent::addError($error);
@@ -63,7 +66,7 @@ class Result extends \Bitrix\Main\Result
         $this->isSuccess = $bool;
     }
 
-    final public function getFirstError(): Error
+    final public function getFirstError(): ?Error
     {
         return $this->getErrors()[0];
     }
