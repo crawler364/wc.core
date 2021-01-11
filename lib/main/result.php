@@ -47,7 +47,7 @@ class Result extends \Bitrix\Main\Result
         die();
     }
 
-    final public function prepareJson(): AjaxJson
+    final public function prepareAjaxJson(): AjaxJson
     {
         $data = Tools::reformatArrayKeys($this->getData());
         $isSuccess = Tools::reformatArrayKeys($this->isSuccess());
