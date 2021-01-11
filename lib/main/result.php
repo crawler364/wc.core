@@ -50,7 +50,7 @@ class Result extends \Bitrix\Main\Result
     final public function prepareAjaxJson(): AjaxJson
     {
         $data = Tools::reformatArrayKeys($this->getData());
-        $isSuccess = Tools::reformatArrayKeys($this->isSuccess());
+        $isSuccess = $this->isSuccess() ? AjaxJson::STATUS_SUCCESS : AjaxJson::STATUS_ERROR;
 
         return new AjaxJson($data, $isSuccess, $this->getErrorCollection());
     }
