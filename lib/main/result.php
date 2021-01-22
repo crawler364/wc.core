@@ -13,7 +13,7 @@ class Result extends \Bitrix\Main\Result
 {
     /**
      * @param Error|string $error
-     * @param array $params
+     * @param array $params = ['REPLASE', 'LANGUAGE', 'CUSTOM_DATA']
      * @return Result
      */
     final public function addError($error, $params = []): Result
