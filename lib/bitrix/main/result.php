@@ -1,7 +1,7 @@
 <?php
 
 
-namespace WC\Main;
+namespace WC\Core\Bitrix\Main;
 
 
 use Bitrix\Main\Engine\Response\AjaxJson;
@@ -39,7 +39,7 @@ class Result extends \Bitrix\Main\Result
             'ERRORS' => $this->getErrors(),
         ];
 
-        $result = Tools::reformatArrayKeys($result);
+        $result = \WC\Core\Helpers\Main::reformatArrayKeys($result);
 
         echo Json::encode($result);
 
@@ -49,7 +49,7 @@ class Result extends \Bitrix\Main\Result
 
     final public function prepareAjaxJson(): AjaxJson
     {
-        $data = Tools::reformatArrayKeys($this->getData());
+        $data = \WC\Core\Helpers\Main::reformatArrayKeys($this->getData());
         $isSuccess = $this->isSuccess() ? AjaxJson::STATUS_SUCCESS : AjaxJson::STATUS_ERROR;
 
         return new AjaxJson($data, $isSuccess, $this->getErrorCollection());
