@@ -1,5 +1,5 @@
 <?php
-$MESS['WC_CORE_MODULE_NAME'] = 'WC Main';
+$MESS['WC_CORE_MODULE_NAME'] = 'WC Core';
 $MESS['WC_CORE_MODULE_DESCRIPTION'] = 'Набор основных классов для работы модулей WebCrea';
 $MESS['WC_CORE_PARTNER_NAME'] = 'WebCrea';
 $MESS['WC_CORE_PARTNER_URI'] = 'https://webcrea.ru';

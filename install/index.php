@@ -22,10 +22,10 @@ class wc_core extends CModule
             $this->MODULE_VERSION_DATE = $arModuleVersion["VERSION_DATE"];
         }
 
-        $this->MODULE_NAME = Loc::getMessage('WC_MAIN_MODULE_NAME');
-        $this->MODULE_DESCRIPTION = Loc::getMessage('WC_MAIN_MODULE_DESCRIPTION');
-        $this->PARTNER_NAME = Loc::getMessage('WC_MAIN_PARTNER_NAME');
-        $this->PARTNER_URI = Loc::getMessage('WC_MAIN_PARTNER_URI');
+        $this->MODULE_NAME = Loc::getMessage('WC_CORE_MODULE_NAME');
+        $this->MODULE_DESCRIPTION = Loc::getMessage('WC_CORE_MODULE_DESCRIPTION');
+        $this->PARTNER_NAME = Loc::getMessage('WC_CORE_PARTNER_NAME');
+        $this->PARTNER_URI = Loc::getMessage('WC_CORE_PARTNER_URI');
     }
 
     function DoInstall()
@@ -39,7 +39,7 @@ class wc_core extends CModule
             if (Main\Loader::includeModule($this->MODULE_ID)) {
                 $this->InstallEvents();
             } else {
-                throw new Main\SystemException(Loc::getMessage('WC_MAIN_MODULE_NOT_REGISTERED'));
+                throw new Main\SystemException(Loc::getMessage('WC_CORE_MODULE_NOT_REGISTERED'));
             }
         } catch (Main\SystemException $exception) {
             $result = false;
@@ -72,7 +72,7 @@ class wc_core extends CModule
     {
         $requirePhp = '7.1';
         if (CheckVersion(PHP_VERSION, $requirePhp) === false) {
-            throw new Main\SystemException(Loc::getMessage('WC_MAIN_INSTALL_REQUIRE_PHP', ['#VERSION#' => $requirePhp]));
+            throw new Main\SystemException(Loc::getMessage('WC_CORE_INSTALL_REQUIRE_PHP', ['#VERSION#' => $requirePhp]));
         }
 
         $requireModules = [
@@ -84,7 +84,7 @@ class wc_core extends CModule
             foreach ($requireModules as $moduleName => $moduleVersion) {
                 $currentVersion = Main\ModuleManager::getVersion($moduleName);
                 if (CheckVersion($currentVersion, $moduleVersion) === false) {
-                    throw new Main\SystemException(Loc::getMessage('WC_MAIN_INSTALL_REQUIRE_MODULE', [
+                    throw new Main\SystemException(Loc::getMessage('WC_CORE_INSTALL_REQUIRE_MODULE', [
                         '#MODULE#' => $moduleName,
                         '#VERSION#' => $moduleVersion,
                     ]));
