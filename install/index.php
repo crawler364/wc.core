@@ -4,9 +4,9 @@ use Bitrix\Main\ModuleManager;
 use Bitrix\Main;
 use Bitrix\Main\Localization\Loc;
 
-class wc_main extends CModule
+class wc_core extends CModule
 {
-    var $MODULE_ID = 'wc.main';
+    var $MODULE_ID = 'wc.core';
     var $MODULE_VERSION;
     var $MODULE_VERSION_DATE;
     var $MODULE_NAME;
