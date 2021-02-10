@@ -1,10 +1,10 @@
 <?php
 
 
-namespace WC\Currency;
+namespace WC\Core\Helpers;
 
 
-class Tools
+class Currency
 {
     public static function format($price, $currency = 'RUB')
     {

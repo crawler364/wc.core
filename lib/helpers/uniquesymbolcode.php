@@ -9,7 +9,7 @@
  * AddEventHandler('iblock', 'OnBeforeIBlockSectionUpdate', [WC\IBlock\UniqueSymbolCode::class, 'constructSection']);
  */
 
-namespace WC\IBlock;
+namespace WC\Core\Helpers;
 
 
 class UniqueSymbolCode

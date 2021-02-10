@@ -1,13 +1,13 @@
 <?php
 
-namespace WC\IBlock;
+namespace WC\Core\Helpers;
 
 
 use Bitrix\Main\Loader;
 use CIBlock;
 use CIBlockElement;
 
-class Tools
+class IBlock
 {
     public static function getElementByXmlId($elementXmlId, $iBlockXmlId = null)
     {

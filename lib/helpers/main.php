@@ -1,12 +1,12 @@
 <?php
 
 
-namespace WC\Main;
+namespace WC\Core\Helpers;
 
 
 use Bitrix\Main\Web\Json;
 
-class Tools
+class Main
 {
     public static function showBreadCrumbs($APPLICATION)
     {

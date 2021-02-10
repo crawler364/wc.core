@@ -1,11 +1,11 @@
 <?php
 
-namespace WC\Catalog;
+namespace WC\Core\Helpers;
 
 
 use Bitrix\Main\Loader;
 
-class Tools
+class Catalog
 {
     public static function getProductRatio($productID)
     {

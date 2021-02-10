@@ -1,10 +1,10 @@
 <?php
 
 
-namespace WC\Sale;
+namespace WC\Core\Helpers;
 
 
-class Tools
+class Sale
 {
     public static function setRegistry($class, $entity)
     {
