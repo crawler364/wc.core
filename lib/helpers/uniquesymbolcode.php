@@ -3,10 +3,10 @@
 /**
  * Если символьный код не здан, транслетирует из названия. Проверяет код на уникальность, если не уникален пробует добавить "1".
  * Еще раз проверяет на уникальность, если опять не уникален, меняет "1" на "2" и тд.
- * AddEventHandler('iblock', 'OnBeforeIBlockElementAdd', [WC\IBlock\UniqueSymbolCode::class, 'constructElement']);
- * AddEventHandler('iblock', 'OnBeforeIBlockSectionAdd', [WC\IBlock\UniqueSymbolCode::class, 'constructSection']);
- * AddEventHandler('iblock', 'OnBeforeIBlockElementUpdate', [WC\IBlock\UniqueSymbolCode::class, 'constructElement']);
- * AddEventHandler('iblock', 'OnBeforeIBlockSectionUpdate', [WC\IBlock\UniqueSymbolCode::class, 'constructSection']);
+ * AddEventHandler('iblock', 'OnBeforeIBlockElementAdd', [WC\Core\Helpers\UniqueSymbolCode::class, 'constructElement']);
+ * AddEventHandler('iblock', 'OnBeforeIBlockSectionAdd', [WC\Core\Helpers\UniqueSymbolCode::class, 'constructSection']);
+ * AddEventHandler('iblock', 'OnBeforeIBlockElementUpdate', [WC\Core\Helpers\UniqueSymbolCode::class, 'constructElement']);
+ * AddEventHandler('iblock', 'OnBeforeIBlockSectionUpdate', [WC\Core\Helpers\UniqueSymbolCode::class, 'constructSection']);
  */
 
 namespace WC\Core\Helpers;
