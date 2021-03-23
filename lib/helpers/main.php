@@ -52,7 +52,7 @@ class Main
         return $strEmails;
     }
 
-    public static function getUserField($field, $userId = null, $enum = false): ?array
+    public static function getUserField($field, $userId = null, $enum = false)
     {
         $user = new \CUser();
         $userId = $userId ?: $user->GetID();
