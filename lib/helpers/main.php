@@ -52,13 +52,21 @@ class Main
         return $strEmails;
     }
 
-    public static function getUserField($field, $userId = null)
+    public static function getUserField($field, $userId = null, $enum = false): ?array
     {
         $user = new \CUser();
         $userId = $userId ?: $user->GetID();
 
         if (($userInfo = $user::GetByID($userId)->Fetch()) && $userInfo[$field]) {
-            return $userInfo[$field];
+            if ($enum) {
+                $CUserFieldEnum = new \CUserFieldEnum();
+                $dbRes = $CUserFieldEnum->GetList([], ['ID' => $userInfo[$field]]);
+                if ($field = $dbRes->GetNext()) {
+                    return $field;
+                }
+            } else {
+                return $userInfo[$field];
+            }
         }
 
         return null;
