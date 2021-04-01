@@ -1,11 +1,11 @@
 <?php
 
 /**
- * AddEventHandler('iblock', 'OnAfterIBlockElementUpdate', [WC\Core\Helpers\PropertyImageResizer::class, 'init']);
+ * AddEventHandler('iblock', 'OnAfterIBlockElementUpdate', [WC\Core\Handlers\PropertyImageResizer::class, 'init']);
  */
 
 
-namespace WC\Core\Helpers;
+namespace WC\Core\Handlers;
 
 
 class PropertyImageResizer

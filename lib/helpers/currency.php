@@ -8,6 +8,7 @@ class Currency
 {
     public static function format($price, $currency = 'RUB')
     {
-        return \SaleFormatCurrency($price, $currency);
+        $price = \Bitrix\Sale\PriceMaths::roundPrecision($price);
+        return \CCurrencyLang::CurrencyFormat($price, $currency);
     }
 }
