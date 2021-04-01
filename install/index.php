@@ -28,7 +28,7 @@ class wc_core extends CModule
         $this->PARTNER_URI = Loc::getMessage('WC_CORE_PARTNER_URI');
     }
 
-    function DoInstall()
+    function DoInstall(): bool
     {
         global $APPLICATION;
         $result = true;
@@ -49,7 +49,7 @@ class wc_core extends CModule
         return $result;
     }
 
-    function DoUninstall()
+    function DoUninstall(): void
     {
         if (Main\Loader::includeModule($this->MODULE_ID)) {
             $this->UnInstallEvents();
@@ -68,7 +68,7 @@ class wc_core extends CModule
         // todo \WC\IBlock\UniqueSymbolCode
     }
 
-    private function checkRequirements()
+    private function checkRequirements(): void
     {
         $requirePhp = '7.1';
         if (CheckVersion(PHP_VERSION, $requirePhp) === false) {

@@ -7,7 +7,7 @@ use Bitrix\Main\Loader;
 
 class Catalog
 {
-    public static function getProductRatio($productID)
+    public static function getProductRatio($productID): float
     {
         Loader::includeModule('catalog');
         $ratio = \Bitrix\Catalog\MeasureRatioTable::getList([
@@ -18,7 +18,7 @@ class Catalog
         return $ratio ? (float)$ratio['RATIO'] : 1.00;
     }
 
-    public static function formatWeight($weightInGrams)
+    public static function formatWeight($weightInGrams): string
     {
         if ($weightInGrams >= 1000) {
             $weightFormatted = round($weightInGrams / 1000, 2) . ' кг';

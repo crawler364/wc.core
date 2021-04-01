@@ -4,12 +4,11 @@ namespace WC\Core\Helpers;
 
 
 use Bitrix\Main\Loader;
-use CIBlock;
 use CIBlockElement;
 
 class IBlock
 {
-    public static function getElementByXmlId($elementXmlId, $iBlockXmlId = null)
+    public static function getElementByXmlId($elementXmlId, $iBlockXmlId = null): ?array
     {
         Loader::includeModule('iblock');
 
@@ -32,33 +31,13 @@ class IBlock
     public static function getIBlockIDByCode($code)
     {
         Loader::includeModule('iblock');
-        $res = CIBlock::GetList([], ['CODE' => $code, "CHECK_PERMISSIONS" => "N"], false);
-        if ($ar = $res->Fetch()) {
-            return $ar["ID"];
-        }
-        return null;
-    }
-
-    public static function getOffersIBlock($iBlockXmlId)
-    {
-        Loader::includeModule('catalog');
 
         $iBlockTable = \Bitrix\Iblock\IblockTable::getList([
             'select' => ['ID'],
-            'filter' => ['XML_ID' => $iBlockXmlId],
-        ]);
-        if (!$iBlock = $iBlockTable->fetch()) {
-            return null;
-        }
-
-        $skuIBlock = \CCatalogSku::GetInfoByIBlock($iBlock['ID']);
-
-        $iBlockTable = \Bitrix\Iblock\IblockTable::getList([
-            'select' => ['XML_ID'],
-            'filter' => ['ID' => $skuIBlock['IBLOCK_ID']],
+            'filter' => ['CODE' => $code],
         ]);
         if ($iBlock = $iBlockTable->fetch()) {
-            return $iBlock;
+            return $iBlock['ID'];
         }
 
         return null;

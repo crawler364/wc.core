@@ -6,7 +6,7 @@ namespace WC\Core\Helpers;
 
 class Sale
 {
-    public static function setRegistry($class, $entity)
+    public static function setRegistry($class, $entity): void
     {
         $registry = \Bitrix\Sale\Registry::getInstance(\Bitrix\Sale\Registry::REGISTRY_TYPE_ORDER);
         $registry->set(constant("\Bitrix\Sale\Registry::$entity"), $class);

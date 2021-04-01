@@ -26,7 +26,7 @@ class Result extends \Bitrix\Main\Result
         return parent::addError($error);
     }
 
-    final public function echoJson()
+    final public function echoJson(): void
     {
         global $APPLICATION;
         $APPLICATION->RestartBuffer();
@@ -44,7 +44,6 @@ class Result extends \Bitrix\Main\Result
         echo Json::encode($result);
 
         \CMain::FinalActions();
-        die();
     }
 
     final public function prepareAjaxJson(): AjaxJson
@@ -61,7 +60,7 @@ class Result extends \Bitrix\Main\Result
         return $this->data[$field];
     }
 
-    final public function setSuccess(bool $bool)
+    final public function setSuccess(bool $bool): void
     {
         $this->isSuccess = $bool;
     }
@@ -71,7 +70,7 @@ class Result extends \Bitrix\Main\Result
         return $this->getErrors()[0];
     }
 
-    final public function mergeResult(object $result)
+    final public function mergeResult(object $result): void
     {
         if ($data = $result->getData()) {
             $this->setData($data);
