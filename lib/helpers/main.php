@@ -56,7 +56,7 @@ class Main
         return $strEmails;
     }
 
-    public static function getUserField($field, $userId = null, $enum = false): ?array
+    public static function getUserField($field, $userId = null, $enum = false)
     {
         $user = new \CUser();
         $userId = $userId ?: $user->GetID();
@@ -85,6 +85,7 @@ class Main
         return $siteId;
     }
 
+    // todo это в wc.core handlers и придумать как для json все в строку
     public static function reformatArrayKeys($array, $toType = null): array
     {
         foreach ($array as $key => $value) {
