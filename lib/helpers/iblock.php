@@ -1,8 +1,10 @@
 <?php
 
+
 namespace WC\Core\Helpers;
 
 
+use Bitrix\Iblock\IblockTable;
 use Bitrix\Main\Loader;
 use CIBlockElement;
 
@@ -28,11 +30,11 @@ class IBlock
         return null;
     }
 
-    public static function getIBlockIDByCode($code)
+    public static function getIBlockIdByCode($code)
     {
         Loader::includeModule('iblock');
 
-        $iBlockTable = \Bitrix\Iblock\IblockTable::getList([
+        $iBlockTable = IblockTable::getList([
             'select' => ['ID'],
             'filter' => ['CODE' => $code],
         ]);

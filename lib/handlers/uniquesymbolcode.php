@@ -12,8 +12,13 @@
 namespace WC\Core\Handlers;
 
 
+use Bitrix\Iblock\ElementTable;
+use Bitrix\Iblock\SectionTable;
+use Cutil;
+
 class UniqueSymbolCode
 {
+    // todo настройки в админку
     private static $arParams = [
         'max_len' => '100',
         'change_case' => 'L',
@@ -41,7 +46,7 @@ class UniqueSymbolCode
     {
         if ($arFields['NAME']) {
             self::$iBlockId = $arFields['IBLOCK_ID'];
-            $code = $arFields['CODE'] ?: \Cutil::translit($arFields['NAME'], 'ru', self::$arParams);
+            $code = $arFields['CODE'] ?: Cutil::translit($arFields['NAME'], 'ru', self::$arParams);
             $arFields['CODE'] = self::checkCode($code);
         }
     }
@@ -52,12 +57,12 @@ class UniqueSymbolCode
         $select = ['IBLOCK_ID', 'ID'];
 
         if (self::$isElem) {
-            $res = \Bitrix\Iblock\ElementTable::getList([
+            $res = ElementTable::getList([
                 'filter' => $filter,
                 'select' => $select,
             ]);
         } elseif (self::$isSect) {
-            $res = \Bitrix\Iblock\SectionTable::getList([
+            $res = SectionTable::getList([
                 'filter' => $filter,
                 'select' => $select,
             ]);

@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Ресайз дополнительных картинок элементов ИБ
  * AddEventHandler('iblock', 'OnAfterIBlockElementUpdate', [WC\Core\Handlers\PropertyImageResizer::class, 'init']);
  */
 
@@ -10,9 +11,11 @@ namespace WC\Core\Handlers;
 
 class PropertyImageResizer
 {
+    // todo настройки в админку
     private static $propertyCode = "MORE_PHOTO";
     private static $maxWidth = 1000;
     private static $maxHeight = 1000;
+    private static $resizeType = BX_RESIZE_IMAGE_PROPORTIONAL;
 
     public static function init($arFields): void
     {
@@ -26,7 +29,7 @@ class PropertyImageResizer
                     $resizeImg = \CFile::ResizeImageGet($property['VALUE'], [
                         'width' => self::$maxWidth,
                         'height' => self::$maxHeight,
-                    ], BX_RESIZE_IMAGE_PROPORTIONAL, true);
+                    ], self::$resizeType, true);
                     $imgFileArray[] = \CFile::MakeFileArray($_SERVER["DOCUMENT_ROOT"] . $resizeImg["src"]);
                 } else {
                     $imgFileArray[] = \CFile::MakeFileArray($_SERVER["DOCUMENT_ROOT"] . $imgPath);

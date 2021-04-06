@@ -8,6 +8,7 @@ use Bitrix\Main\Engine\Response\AjaxJson;
 use Bitrix\Main\Error;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Web\Json;
+use WC\Core\Helpers\ReformatArray;
 
 class Result extends \Bitrix\Main\Result
 {
@@ -39,7 +40,7 @@ class Result extends \Bitrix\Main\Result
             'ERRORS' => $this->getErrors(),
         ];
 
-        $result = \WC\Core\Helpers\Main::reformatArrayKeys($result);
+        $result = ReformatArray::handler($result);
 
         echo Json::encode($result);
 
@@ -48,7 +49,7 @@ class Result extends \Bitrix\Main\Result
 
     final public function prepareAjaxJson(): AjaxJson
     {
-        $data = \WC\Core\Helpers\Main::reformatArrayKeys($this->getData());
+        $data = ReformatArray::handler($this->getData());
         $isSuccess = $this->isSuccess() ? AjaxJson::STATUS_SUCCESS : AjaxJson::STATUS_ERROR;
 
         return new AjaxJson($data, $isSuccess, $this->getErrorCollection());
