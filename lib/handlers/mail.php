@@ -11,7 +11,7 @@ class Mail
     private static $testDomain = '';
 
     // crawler364 Установить доп. параметр -f отправитель письма (Return-path, envelope-from..) из заголовка From
-    static function custom_mail($to, $subject, $message, $additional_headers, $additional_parameters): bool
+    public static function custom_mail($to, $subject, $message, $additional_headers, $additional_parameters): bool
     {
         if (self::$bccEmail){
             $additional_headers .= "\r\n" . "BCC: " . self::$bccEmail;
