@@ -11,7 +11,7 @@ class ReformatArray
     /** @var array $params = ['CASE' => 'camel2snake' | 'snake2camel', 'TO_STRING' => true | false] */
     public static $params = [];
 
-    public static function handler(array $array): array
+    public static function handler(array $array): ?array
     {
         foreach ($array as $key => $value) {
             $key = self::reformatString($key);
