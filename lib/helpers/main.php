@@ -92,7 +92,7 @@ class Main
 
     public static function getSiteId(): string
     {
-        if ($siteId = Context::getCurrent()->getSite()) {
+        if (!$siteId = Context::getCurrent()->getSite()) {
             $siteId = SiteTable::getList([
                 'order' => ['SORT' => 'ASC'],
                 'select' => ['LID'],
