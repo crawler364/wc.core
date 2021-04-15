@@ -8,7 +8,7 @@ use Bitrix\Main\Web\Json;
 
 class ReformatArray
 {
-    /** @var array $params = ['CASE' => 'camel2snake' | 'snake2camel', 'TO_STRING' => true | false] */
+    /** @var array $params = ['CASE' => 'camel2snake'] */
     public static $params = [];
 
     public static function handler(array $array): ?array
@@ -16,15 +16,12 @@ class ReformatArray
         foreach ($array as $key => $value) {
             $key = self::reformatString($key);
 
-            if ($value && is_object($value)) {
+            if (is_object($value)) {
                 $value = Json::encode($value);
                 $value = Json::decode($value);
             }
-            if ($value && is_array($value)) {
+            if (is_array($value)) {
                 $value = self::handler($value);
-            }
-            if ($value && is_numeric($value) && self::$params['TO_STRING'] !== false) {
-                $value = (string)$value;
             }
 
             $return[$key] = $value;
