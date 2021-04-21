@@ -1,9 +1,16 @@
 <?php
+
+
 namespace WC\Core\ORM\Captcha;
+
 
 use Bitrix\Main\Localization\Loc,
     Bitrix\Main\ORM\Data\DataManager,
-    Bitrix\Main\ORM\Fields;
+    Bitrix\Main\ORM\Fields\DatetimeField,
+    Bitrix\Main\ORM\Fields\StringField,
+    Bitrix\Main\ORM\Fields\Validators\LengthValidator,
+    Bitrix\Main\SystemException,
+    Bitrix\Main\ArgumentTypeException;
 
 Loc::loadMessages(__FILE__);
 
@@ -20,7 +27,6 @@ Loc::loadMessages(__FILE__);
  *
  * @package Bitrix\Captcha
  **/
-
 class CaptchaTable extends DataManager
 {
     /**
@@ -28,7 +34,7 @@ class CaptchaTable extends DataManager
      *
      * @return string
      */
-    public static function getTableName()
+    public static function getTableName(): string
     {
         return 'b_captcha';
     }
@@ -37,32 +43,31 @@ class CaptchaTable extends DataManager
      * Returns entity map definition.
      *
      * @return array
+     * @throws SystemException
      */
-    public static function getMap()
+    public static function getMap(): array
     {
         return [
-            (new Fields\StringField('ID',
-                [
-                    'validation' => [__CLASS__, 'validateId']
-                ]
-            ))->configureTitle(Loc::getMessage('CAPTCHA_ENTITY_ID_FIELD'))
-                ->configurePrimary(true),
-            (new Fields\StringField('CODE',
-                [
-                    'validation' => [__CLASS__, 'validateCode']
-                ]
-            ))->configureTitle(Loc::getMessage('CAPTCHA_ENTITY_CODE_FIELD'))
-                ->configureRequired(true),
-            (new Fields\StringField('IP',
-                [
-                    'validation' => [__CLASS__, 'validateIp']
-                ]
-            ))->configureTitle(Loc::getMessage('CAPTCHA_ENTITY_IP_FIELD'))
-                ->configureRequired(true),
-            (new Fields\DatetimeField('DATE_CREATE',
-                []
-            ))->configureTitle(Loc::getMessage('CAPTCHA_ENTITY_DATE_CREATE_FIELD'))
-                ->configureRequired(true),
+            'ID' => new StringField('ID', [
+                'primary' => true,
+                'autocomplete' => true,
+                'title' => Loc::getMessage('ELEMENT_ENTITY_ID_FIELD'),
+            ]),
+            'CODE' => new StringField('CODE', [
+                'primary' => true,
+                'autocomplete' => true,
+                'title' => Loc::getMessage('ELEMENT_ENTITY_CODE_FIELD'),
+            ]),
+            'IP' => new StringField('IP', [
+                'primary' => true,
+                'autocomplete' => true,
+                'title' => Loc::getMessage('ELEMENT_ENTITY_IP_FIELD'),
+            ]),
+            'DATE_CREATE' => new DatetimeField('DATE_CREATE', [
+                'primary' => true,
+                'autocomplete' => true,
+                'title' => Loc::getMessage('ELEMENT_ENTITY_DATE_CREATE_FIELD'),
+            ]),
         ];
     }
 
@@ -70,11 +75,12 @@ class CaptchaTable extends DataManager
      * Returns validators for ID field.
      *
      * @return array
+     * @throws ArgumentTypeException
      */
-    public static function validateId()
+    public static function validateId(): array
     {
         return [
-            new Fields\Validators\LengthValidator(null, 32),
+            new LengthValidator(null, 32),
         ];
     }
 
@@ -82,11 +88,12 @@ class CaptchaTable extends DataManager
      * Returns validators for CODE field.
      *
      * @return array
+     * @throws ArgumentTypeException
      */
-    public static function validateCode()
+    public static function validateCode(): array
     {
         return [
-            new Fields\Validators\LengthValidator(null, 20),
+            new LengthValidator(null, 20),
         ];
     }
 
@@ -94,11 +101,12 @@ class CaptchaTable extends DataManager
      * Returns validators for IP field.
      *
      * @return array
+     * @throws ArgumentTypeException
      */
-    public static function validateIp()
+    public static function validateIp(): array
     {
         return [
-            new Fields\Validators\LengthValidator(null, 15),
+            new LengthValidator(null, 15),
         ];
     }
 }
