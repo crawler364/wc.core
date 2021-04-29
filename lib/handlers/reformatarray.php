@@ -1,7 +1,7 @@
 <?php
 
 
-namespace WC\Core\Helpers;
+namespace WC\Core\Handlers;
 
 
 use Bitrix\Main\Web\Json;
@@ -11,7 +11,7 @@ class ReformatArray
     /** @var array $params = ['CASE' => 'camel2snake'] */
     public static $params = [];
 
-    public static function handler(array $array): ?array
+    public static function init(array $array): ?array
     {
         foreach ($array as $key => $value) {
             $key = self::reformatString($key);
@@ -21,7 +21,7 @@ class ReformatArray
                 $value = Json::decode($value);
             }
             if (is_array($value)) {
-                $value = self::handler($value);
+                $value = self::init($value);
             }
 
             $return[$key] = $value;
