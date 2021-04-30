@@ -51,36 +51,19 @@ class CaptchaTable extends DataManager
             'ID' => new StringField('ID', [
                 'primary' => true,
                 'autocomplete' => true,
-                'title' => Loc::getMessage('ELEMENT_ENTITY_ID_FIELD'),
+                'title' => Loc::getMessage('CAPTCHA_ENTITY_ID_FIELD'),
             ]),
             'CODE' => new StringField('CODE', [
-                'primary' => true,
-                'autocomplete' => true,
-                'title' => Loc::getMessage('ELEMENT_ENTITY_CODE_FIELD'),
+                'validation' => [__CLASS__, 'validateCode'],
+                'title' => Loc::getMessage('CAPTCHA_ENTITY_CODE_FIELD'),
             ]),
             'IP' => new StringField('IP', [
-                'primary' => true,
-                'autocomplete' => true,
-                'title' => Loc::getMessage('ELEMENT_ENTITY_IP_FIELD'),
+                'validation' => [__CLASS__, 'validateIp'],
+                'title' => Loc::getMessage('CAPTCHA_ENTITY_IP_FIELD'),
             ]),
             'DATE_CREATE' => new DatetimeField('DATE_CREATE', [
-                'primary' => true,
-                'autocomplete' => true,
-                'title' => Loc::getMessage('ELEMENT_ENTITY_DATE_CREATE_FIELD'),
+                'title' => Loc::getMessage('CAPTCHA_ENTITY_DATE_CREATE_FIELD'),
             ]),
-        ];
-    }
-
-    /**
-     * Returns validators for ID field.
-     *
-     * @return array
-     * @throws ArgumentTypeException
-     */
-    public static function validateId(): array
-    {
-        return [
-            new LengthValidator(null, 32),
         ];
     }
 
