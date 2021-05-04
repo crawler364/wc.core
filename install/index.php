@@ -1,8 +1,11 @@
 <?
+/** @noinspection AccessModifierPresentedInspection */
 
 use Bitrix\Main\ModuleManager;
 use Bitrix\Main;
 use Bitrix\Main\Localization\Loc;
+
+Loc::loadMessages(__FILE__);
 
 class wc_core extends CModule
 {
@@ -11,10 +14,10 @@ class wc_core extends CModule
     var $MODULE_VERSION_DATE;
     var $MODULE_NAME;
     var $MODULE_DESCRIPTION;
+    private $kernelDir;
 
     public function __construct()
     {
-        Loc::loadMessages(__FILE__);
         include __DIR__ . '/version.php';
 
         if (is_array($arModuleVersion) && array_key_exists("VERSION", $arModuleVersion)) {
@@ -26,6 +29,8 @@ class wc_core extends CModule
         $this->MODULE_DESCRIPTION = Loc::getMessage('WC_CORE_MODULE_DESCRIPTION');
         $this->PARTNER_NAME = Loc::getMessage('WC_CORE_PARTNER_NAME');
         $this->PARTNER_URI = Loc::getMessage('WC_CORE_PARTNER_URI');
+
+        $this->kernelDir = $this->getKernelDir();
     }
 
     function DoInstall(): bool
@@ -38,6 +43,7 @@ class wc_core extends CModule
             Main\ModuleManager::registerModule($this->MODULE_ID);
             if (Main\Loader::includeModule($this->MODULE_ID)) {
                 $this->InstallEvents();
+                $this->InstallFiles();
             } else {
                 throw new Main\SystemException(Loc::getMessage('WC_CORE_MODULE_NOT_REGISTERED'));
             }
@@ -52,6 +58,7 @@ class wc_core extends CModule
     function DoUninstall(): void
     {
         if (Main\Loader::includeModule($this->MODULE_ID)) {
+            $this->UninstallFiles();
             $this->UnInstallEvents();
         }
 
@@ -66,6 +73,17 @@ class wc_core extends CModule
     function UnInstallEvents()
     {
         // todo \WC\IBlock\UniqueSymbolCode
+    }
+
+    function InstallFiles(): void
+    {
+        CopyDirFiles(__DIR__ . '/components', $this->kernelDir . "/components", true, true);
+    }
+
+    function UnInstallFiles()
+    {
+        //todo
+        //Directory::deleteDirectory($this->kernelDir . '/components/wc/order');
     }
 
     private function checkRequirements(): void
@@ -91,5 +109,11 @@ class wc_core extends CModule
                 }
             }
         }
+    }
+
+    private function getKernelDir(): string
+    {
+        $kernelDir = Directory::isDirectoryExists($_SERVER['DOCUMENT_ROOT'] . '/local') ? '/local' : '/bitrix';
+        return $_SERVER['DOCUMENT_ROOT'] . $kernelDir;
     }
 }
