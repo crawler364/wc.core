@@ -14,7 +14,7 @@ class Options
     {
         global $APPLICATION;
 
-        $APPLICATION->IncludeComponent('wc.core:admin.form.edit', '', [
+        $APPLICATION->IncludeComponent('wc:admin.form.edit', '', [
             'FORM_ID' => 'WC_CORE_ADMIN_OPTIONS',
             'TABS' => $this->getTabs(),
             'FIELDS' => $this->getOptions(),
