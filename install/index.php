@@ -1,10 +1,11 @@
 <?
 /** @noinspection AccessModifierPresentedInspection */
 
+use Bitrix\Main\Loader;
 use Bitrix\Main\ModuleManager;
-use Bitrix\Main;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\IO\Directory;
+use Bitrix\Main\SystemException;
 
 Loc::loadMessages(__FILE__);
 
@@ -41,14 +42,15 @@ class wc_core extends CModule
 
         try {
             $this->checkRequirements();
-            Main\ModuleManager::registerModule($this->MODULE_ID);
-            if (Main\Loader::includeModule($this->MODULE_ID)) {
+            ModuleManager::registerModule($this->MODULE_ID);
+            if (Loader::includeModule($this->MODULE_ID)) {
+                $this->InstallDB();
                 $this->InstallEvents();
                 $this->InstallFiles();
             } else {
-                throw new Main\SystemException(Loc::getMessage('WC_CORE_MODULE_NOT_REGISTERED'));
+                throw new SystemException(Loc::getMessage('WC_CORE_MODULE_NOT_REGISTERED'));
             }
-        } catch (Main\SystemException $exception) {
+        } catch (SystemException $exception) {
             $result = false;
             $APPLICATION->ThrowException($exception->getMessage());
         }
@@ -58,22 +60,29 @@ class wc_core extends CModule
 
     function DoUninstall(): void
     {
-        if (Main\Loader::includeModule($this->MODULE_ID)) {
+        if (Loader::includeModule($this->MODULE_ID)) {
             $this->UninstallFiles();
             $this->UnInstallEvents();
+            $this->UnInstallDB();
         }
 
-        Main\ModuleManager::unRegisterModule($this->MODULE_ID);
+        ModuleManager::unRegisterModule($this->MODULE_ID);
     }
 
     function InstallEvents()
     {
-        // todo \WC\IBlock\UniqueSymbolCode
+    }
+
+    function InstallDB(): bool
+    {
+        \WC\Core\Handlers\UniqueSymbolCode::setDefaultSettings();
+
+        return true;
     }
 
     function UnInstallEvents()
     {
-        // todo \WC\IBlock\UniqueSymbolCode
+
     }
 
     function InstallFiles(): void
@@ -81,17 +90,22 @@ class wc_core extends CModule
         CopyDirFiles(__DIR__ . '/components', $this->kernelDir . "/components", true, true);
     }
 
-    function UnInstallFiles()
+    function UnInstallFiles(): void
     {
-        //todo
-        //Directory::deleteDirectory($this->kernelDir . '/components/wc/order');
+        Directory::deleteDirectory($this->kernelDir . '/components/wc/admin.form.edit');
+    }
+
+    function UnInstallDB(): void
+    {
+        \WC\Core\Config::removeOption();
     }
 
     private function checkRequirements(): void
     {
         $requirePhp = '7.1';
+
         if (CheckVersion(PHP_VERSION, $requirePhp) === false) {
-            throw new Main\SystemException(Loc::getMessage('WC_CORE_INSTALL_REQUIRE_PHP', ['#VERSION#' => $requirePhp]));
+            throw new SystemException(Loc::getMessage('WC_CORE_INSTALL_REQUIRE_PHP', ['#VERSION#' => $requirePhp]));
         }
 
         $requireModules = [
@@ -101,9 +115,9 @@ class wc_core extends CModule
 
         if (class_exists(ModuleManager::class)) {
             foreach ($requireModules as $moduleName => $moduleVersion) {
-                $currentVersion = Main\ModuleManager::getVersion($moduleName);
+                $currentVersion = ModuleManager::getVersion($moduleName);
                 if (CheckVersion($currentVersion, $moduleVersion) === false) {
-                    throw new Main\SystemException(Loc::getMessage('WC_CORE_INSTALL_REQUIRE_MODULE', [
+                    throw new SystemException(Loc::getMessage('WC_CORE_INSTALL_REQUIRE_MODULE', [
                         '#MODULE#' => $moduleName,
                         '#VERSION#' => $moduleVersion,
                     ]));

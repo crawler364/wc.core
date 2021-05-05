@@ -15,85 +15,58 @@ class Options
         global $APPLICATION;
 
         $APPLICATION->IncludeComponent('wc:admin.form.edit', '', [
-            'FORM_ID' => 'WC_CORE_ADMIN_OPTIONS',
+            'FORM_ID' => 'wc_core_admin_options',
+            'MODULE_ID' => \WC\Core\Config::getModuleName(),
             'TABS' => $this->getTabs(),
-            'FIELDS' => $this->getOptions(),
-            'BUTTONS' => [
-                ['BEHAVIOR' => 'save'],
-                ['BEHAVIOR' => 'reset'],
-            ],
         ]);
     }
 
     protected function getTabs(): array
     {
         return [
-            'COMMON' => [
-                'name' => Loc::getMessage('WC_CORE_TAB_OPTIONS'),
-            ],
-        ];
-    }
-
-    public function getOptions(): array
-    {
-        return $this->getUniqueSymbolCodeOptions();
-    }
-
-    protected function getUniqueSymbolCodeOptions(): array
-    {
-        return [
-            'max_len' => [
-                'TYPE' => 'integer',
-                'GROUP' => Loc::getMessage('WC_CORE_TAB_OPTIONS_UNIQUE_SYMBOL_CODE'),
-                'NAME' => Loc::getMessage('WC_CORE_TAB_OPTIONS_MAX_LEN'),
-                'HELP_MESSAGE' => Loc::getMessage('WC_CORE_TAB_OPTIONS_MAX_LEN_HELP'),
-                'SETTINGS' => [
-                    'DEFAULT_VALUE' => 100,
-                    'MIN_VALUE' => 1,
-                ],
-            ],
-            'change_case' => [
-                'TYPE' => 'enumeration',
-                'GROUP' => Loc::getMessage('WC_CORE_TAB_OPTIONS_UNIQUE_SYMBOL_CODE'),
-                'NAME' => Loc::getMessage('WC_CORE_TAB_OPTIONS_MAX_LEN_CASE'),
-                'HELP_MESSAGE' => Loc::getMessage('WC_CORE_TAB_OPTIONS_MAX_LEN_CASE_HELP'),
-                'VALUES' => [
+            [
+                'DIV' => 'unique_symbol_code',
+                'TAB' => Loc::getMessage('WC_CORE_TAB_OPTIONS_UNIQUE_SYMBOL_CODE'),
+                'OPTIONS' => [
+                    Loc::getMessage('WC_CORE_TAB_OPTIONS_SYMBOL_CODE_NOTE'),
                     [
-                        'ID' => 'L',
-                        'VALUE' => 'L',
+                        'max_len',
+                        Loc::getMessage('WC_CORE_TAB_OPTIONS_MAX_LEN'),
+                        \WC\Core\Config::getOption('max_len'),
+                        ['text', 10, 100],
                     ],
                     [
-                        'ID' => 'l',
-                        'VALUE' => 'l',
+                        'change_case',
+                        Loc::getMessage('WC_CORE_TAB_OPTIONS_MAX_LEN_CHANGE_CASE'),
+                        \WC\Core\Config::getOption('change_case'),
+                        [
+                            'selectbox',
+                            [
+                                'L' => Loc::getMessage('WC_CORE_TAB_OPTIONS_MAX_LEN_CHANGE_CASE_L'),
+                                'U' => Loc::getMessage('WC_CORE_TAB_OPTIONS_MAX_LEN_CHANGE_CASE_U'),
+                                'false' => Loc::getMessage('WC_CORE_TAB_OPTIONS_MAX_LEN_CHANGE_CASE_D'),
+                            ],
+                        ],
+                    ],
+                    [
+                        'replace_space',
+                        Loc::getMessage('WC_CORE_TAB_OPTIONS_REPLACE_SPACE'),
+                        \WC\Core\Config::getOption('replace_space'),
+                        ['text', 1, 10],
+                    ],
+                    [
+                        'replace_other',
+                        Loc::getMessage('WC_CORE_TAB_OPTIONS_REPLACE_OTHER'),
+                        \WC\Core\Config::getOption('replace_other'),
+                        ['text', 1, 10],
+                    ],
+                    [
+                        'delete_repeat_replace',
+                        Loc::getMessage('WC_CORE_TAB_OPTIONS_DELETE_REPEAT_REPLACE'),
+                        \WC\Core\Config::getOption('delete_repeat_replace'),
+                        ['checkbox'],
                     ],
                 ],
-                'SETTINGS' => [
-                    'DEFAULT_VALUE' => 'L',
-                    'ALLOW_NO_VALUE' => 'N',
-                ],
-            ],
-            'replace_space' => [
-                'TYPE' => 'string',
-                'GROUP' => Loc::getMessage('WC_CORE_TAB_OPTIONS_UNIQUE_SYMBOL_CODE'),
-                'NAME' => Loc::getMessage('WC_CORE_TAB_OPTIONS_REPLACE_SPACE'),
-                'HELP_MESSAGE' => Loc::getMessage('WC_CORE_TAB_OPTIONS_REPLACE_SPACE_HELP'),
-                'SETTINGS' => [
-                    'DEFAULT_VALUE' => '-',
-                ],
-            ],
-            'replace_other' => [
-                'TYPE' => 'string',
-                'GROUP' => Loc::getMessage('WC_CORE_TAB_OPTIONS_UNIQUE_SYMBOL_CODE'),
-                'NAME' => Loc::getMessage('WC_CORE_TAB_OPTIONS_REPLACE_OTHER'),
-                'HELP_MESSAGE' => Loc::getMessage('WC_CORE_TAB_OPTIONS_REPLACE_OTHER_HELP'),
-                'SETTINGS' => [
-                    'DEFAULT_VALUE' => '',
-                ],
-            ],
-            'delete_repeat_replace' => [
-                'TYPE' => 'boolean',
-                'GROUP' => Loc::getMessage('WC_CORE_TAB_OPTIONS_DELETE_REPEAT'),
-                'NAME' => Loc::getMessage('WC_CORE_TAB_OPTIONS_DELETE_REPEAT_HELP'),
             ],
         ];
     }
