@@ -76,6 +76,7 @@ class wc_core extends CModule
     function InstallDB(): bool
     {
         \WC\Core\Handlers\UniqueSymbolCode::setDefaultSettings();
+        \WC\Core\Handlers\PropertyImageResizer::setDefaultSettings();
 
         return true;
     }

@@ -68,6 +68,46 @@ class Options
                     ],
                 ],
             ],
+            [
+                'DIV' => 'property_image_resizer',
+                'TAB' => Loc::getMessage('WC_CORE_TAB_OPTIONS_PIR'),
+                'OPTIONS' => [
+                    Loc::getMessage('WC_CORE_TAB_OPTIONS_PIR_NOTE'),
+                    [
+                        'propertyCode',
+                        Loc::getMessage('WC_CORE_TAB_OPTIONS_PIR_CODE'),
+                        \WC\Core\Config::getOption('propertyCode'),
+                        ['text', 10, 50],
+                    ],
+                    [
+                        'maxWidth',
+                        Loc::getMessage('WC_CORE_TAB_OPTIONS_PIR_MAX_WIDTH'),
+                        \WC\Core\Config::getOption('maxWidth'),
+                        ['text', 1, 3],
+                    ],
+                    [
+                        'maxHeight',
+                        Loc::getMessage('WC_CORE_TAB_OPTIONS_PIR_MAX_HEIGHT'),
+                        \WC\Core\Config::getOption('maxHeight'),
+                        ['text', 1, 3],
+                    ],
+                    ['note' => Loc::getMessage('WC_CORE_TAB_OPTIONS_PIR_RESIZE_TYPE_NOTE')],
+                    [
+                        'resizeType',
+                        Loc::getMessage('WC_CORE_TAB_OPTIONS_PIR_RESIZE_TYPE'),
+                        \WC\Core\Config::getOption('resizeType'),
+                        [
+                            'selectbox',
+                            [
+                                'BX_RESIZE_IMAGE_EXACT' => 'BX_RESIZE_IMAGE_EXACT',
+                                'BX_RESIZE_IMAGE_PROPORTIONAL' => 'BX_RESIZE_IMAGE_PROPORTIONAL',
+                                'BX_RESIZE_IMAGE_PROPORTIONAL_ALT' => 'BX_RESIZE_IMAGE_PROPORTIONAL_ALT',
+                            ],
+                        ],
+                    ],
+
+                ],
+            ],
         ];
     }
 }
