@@ -103,16 +103,14 @@ class wc_core extends CModule
 
     private function checkRequirements(): void
     {
-        $requirePhp = '7.1';
+        $requirePhp = '7.4';
+        $requireModules = [
+            'main' => '20.200.300',
+        ];
 
         if (CheckVersion(PHP_VERSION, $requirePhp) === false) {
             throw new SystemException(Loc::getMessage('WC_CORE_INSTALL_REQUIRE_PHP', ['#VERSION#' => $requirePhp]));
         }
-
-        $requireModules = [
-            'main' => '17.5.0',
-            'iblock' => '15.0.0',
-        ];
 
         if (class_exists(ModuleManager::class)) {
             foreach ($requireModules as $moduleName => $moduleVersion) {
