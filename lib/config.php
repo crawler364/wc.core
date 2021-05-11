@@ -12,22 +12,9 @@ class Config
         return 'wc.core';
     }
 
-    public static function getLang($code, $replaces = null, $fallback = null): ?string
+    public static function getCommonLangFile(): string
     {
-        $prefix = static::getLangPrefix();
-
-        $result = Loc::getMessage($prefix . $code, $replaces) ?: $fallback;
-
-        if ($result === null) {
-            $result = $code;
-        }
-
-        return $result;
-    }
-
-    public static function getLangPrefix(): string
-    {
-        return 'WC_CORE_';
+        return static::getModulePath() . '/common.php';
     }
 
     public static function getNamespace(): string
