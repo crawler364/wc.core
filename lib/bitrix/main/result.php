@@ -19,12 +19,17 @@ class Result extends \Bitrix\Main\Result
      */
     final public function addError($error, $params = []): Result
     {
-        if (!$error instanceof Error) {
-            $message = Loc::getMessage($error, $params['REPLASE'], $params['LANGUAGE']);
-            $error = new Error($message, $error, $params['CUSTOM_DATA']);
+        if ($error instanceof Error) {
+            $obError = $error;
+        } else {
+            if ($message = Loc::getMessage($error, $params['REPLASE'], $params['LANGUAGE'])) {
+                $obError = new Error($message, $error, $params['CUSTOM_DATA']);
+            } else {
+                $obError = new Error($error, 0, $params['CUSTOM_DATA']);
+            }
         }
 
-        return parent::addError($error);
+        return parent::addError($obError);
     }
 
     final public function echoJson(): void
