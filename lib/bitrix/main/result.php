@@ -76,6 +76,10 @@ class Result extends \Bitrix\Main\Result
         return $this->getErrors()[0];
     }
 
+    /**
+     * @deprecated
+     * @param object $result
+     */
     final public function mergeResult(object $result): void
     {
         if ($data = $result->getData()) {
