@@ -14,7 +14,7 @@ class Result extends \Bitrix\Main\Result
 {
     /**
      * @param Error|string $error
-     * @param array $params = ['REPLASE', 'LANGUAGE', 'CUSTOM_DATA']
+     * @param array $params = ['REPLACE', 'LANGUAGE', 'CUSTOM_DATA']
      * @return Result
      */
     final public function addError($error, $params = []): Result
@@ -22,7 +22,7 @@ class Result extends \Bitrix\Main\Result
         if ($error instanceof Error) {
             $obError = $error;
         } else {
-            if ($message = Loc::getMessage($error, $params['REPLASE'], $params['LANGUAGE'])) {
+            if ($message = Loc::getMessage($error, $params['REPLACE'], $params['LANGUAGE'])) {
                 $obError = new Error($message, $error, $params['CUSTOM_DATA']);
             } else {
                 $obError = new Error($error, 0, $params['CUSTOM_DATA']);
