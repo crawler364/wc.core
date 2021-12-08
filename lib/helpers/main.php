@@ -9,17 +9,6 @@ use Bitrix\Main\SiteTable;
 
 class Main
 {
-    public static function getEmailsFromArray(array $array): string
-    {
-        foreach ($array as $value) {
-            if (check_email($value['EMAIL'])) {
-                $strEmails .= $value['EMAIL'] . ', ';
-            }
-        }
-
-        return $strEmails;
-    }
-
     public static function getSiteId(): string
     {
         if (!$siteId = Context::getCurrent()->getSite()) {

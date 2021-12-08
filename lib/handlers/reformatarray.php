@@ -11,8 +11,10 @@ class ReformatArray
     /** @var array $params = ['CASE' => 'camel2snake'] */
     public static $params = [];
 
-    public static function init(array $array): ?array
+    public static function init(array $array): array
     {
+        $result = [];
+
         foreach ($array as $key => $value) {
             $key = self::reformatString($key);
 
@@ -24,10 +26,10 @@ class ReformatArray
                 $value = self::init($value);
             }
 
-            $return[$key] = $value;
+            $result[$key] = $value;
         }
 
-        return $return;
+        return $result;
     }
 
     public static function reformatString($string): string

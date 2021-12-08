@@ -17,16 +17,14 @@ class Result extends \Bitrix\Main\Result
      * @param array $params = ['REPLACE', 'LANGUAGE', 'CUSTOM_DATA']
      * @return Result
      */
-    final public function addError($error, $params = []): Result
+    final public function addError($error, array $params = []): Result
     {
         if ($error instanceof Error) {
             $obError = $error;
+        } else if ($message = Loc::getMessage($error, $params['REPLACE'], $params['LANGUAGE'])) {
+            $obError = new Error($message, $error, $params['CUSTOM_DATA']);
         } else {
-            if ($message = Loc::getMessage($error, $params['REPLACE'], $params['LANGUAGE'])) {
-                $obError = new Error($message, $error, $params['CUSTOM_DATA']);
-            } else {
-                $obError = new Error($error, 0, $params['CUSTOM_DATA']);
-            }
+            $obError = new Error($error, 0, $params['CUSTOM_DATA']);
         }
 
         return parent::addError($obError);
@@ -59,7 +57,6 @@ class Result extends \Bitrix\Main\Result
 
         return new AjaxJson($data, $isSuccess, $this->getErrorCollection());
     }
-
 
     final public function getDataField($field)
     {
