@@ -6,6 +6,7 @@ use Bitrix\Main\ModuleManager;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\IO\Directory;
 use Bitrix\Main\SystemException;
+use \Bitrix\Main\IO\File;
 
 Loc::loadMessages(__FILE__);
 
@@ -89,11 +90,15 @@ class wc_core extends CModule
     function InstallFiles(): void
     {
         CopyDirFiles(__DIR__ . '/components', $this->kernelDir . "/components", true, true);
+        CopyDirFiles(__DIR__ . '/js', $this->kernelDir . "/js", true, true);
+        CopyDirFiles(__DIR__ . '/ajax', $_SERVER['DOCUMENT_ROOT'] . "/ajax", true, true);
     }
 
     function UnInstallFiles(): void
     {
         Directory::deleteDirectory($this->kernelDir . '/components/wc/admin.form.edit');
+        Directory::deleteDirectory($this->kernelDir . '/js/wc/core');
+        File::deleteFile($_SERVER['DOCUMENT_ROOT'] . '/ajax/component.php');
     }
 
     function UnInstallDB(): void
@@ -103,7 +108,7 @@ class wc_core extends CModule
 
     private function checkRequirements(): void
     {
-        $requirePhp = '7.4';
+        $requirePhp = '7.3';
         $requireModules = [
             'main' => '20.200.300',
         ];
