@@ -14,10 +14,11 @@ class Result extends \Bitrix\Main\Result
 {
     /**
      * @param Error|string $error
-     * @param array $params = ['REPLACE', 'LANGUAGE', 'CUSTOM_DATA']
+     * @param array        $params = ['REPLACE', 'LANGUAGE', 'CUSTOM_DATA']
+     *
      * @return Result
      */
-    final public function addError($error, array $params = []): Result
+    public function addError($error, array $params = []): Result
     {
         if ($error instanceof Error) {
             $obError = $error;
@@ -30,7 +31,7 @@ class Result extends \Bitrix\Main\Result
         return parent::addError($obError);
     }
 
-    final public function echoJson(): void
+    public function echoJson(): void
     {
         global $APPLICATION;
         $APPLICATION->RestartBuffer();
@@ -50,7 +51,7 @@ class Result extends \Bitrix\Main\Result
         \CMain::FinalActions();
     }
 
-    final public function prepareAjaxJson(): AjaxJson
+    public function prepareAjaxJson(): AjaxJson
     {
         $data = ReformatArray::init($this->getData());
         $isSuccess = $this->isSuccess() ? AjaxJson::STATUS_SUCCESS : AjaxJson::STATUS_ERROR;
@@ -58,26 +59,27 @@ class Result extends \Bitrix\Main\Result
         return new AjaxJson($data, $isSuccess, $this->getErrorCollection());
     }
 
-    final public function getDataField($field)
+    public function getDataField($field)
     {
         return $this->data[$field];
     }
 
-    final public function setSuccess(bool $bool): void
+    public function setSuccess(bool $bool): void
     {
         $this->isSuccess = $bool;
     }
 
-    final public function getFirstError(): ?Error
+    public function getFirstError(): ?Error
     {
         return $this->getErrors()[0];
     }
 
     /**
      * @deprecated
+     *
      * @param object $result
      */
-    final public function mergeResult(object $result): void
+    public function mergeResult(object $result): void
     {
         if ($data = $result->getData()) {
             $this->setData($data);
