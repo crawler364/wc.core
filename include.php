@@ -1,9 +1,7 @@
 <?php
 
-use Bitrix\Main\IO\Directory;
-
 //region JS CORE
-$kernelDir = Directory::isDirectoryExists($_SERVER['DOCUMENT_ROOT'] . '/local') ? '/local' : '/bitrix';
+$kernelDir = Bitrix\Main\IO\Directory::isDirectoryExists($_SERVER['DOCUMENT_ROOT'] . '/local') ? '/local' : '/bitrix';
 
 $arJsConfig = [
     'wc.core.ajax.component' => [
@@ -14,7 +12,6 @@ $arJsConfig = [
 foreach ($arJsConfig as $ext => $arExt) {
     \CJSCore::RegisterExt($ext, $arExt);
 }
-//endregion
-
 
 \CUtil::InitJSCore(['jquery3', 'wc.core.ajax.component']);
+//endregion
