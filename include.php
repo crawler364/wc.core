@@ -1,7 +1,8 @@
 <?php
 
 //region JS CORE
-$kernelDir = Bitrix\Main\IO\Directory::isDirectoryExists($_SERVER['DOCUMENT_ROOT'] . '/local') ? '/local' : '/bitrix';
+$kernelDir = strpos(__DIR__, '/local/modules/wc.core') ? '/local' : '/bitrix';
+$kernelDir = $_SERVER['DOCUMENT_ROOT'] . $kernelDir;
 
 $arJsConfig = [
     'wc.core.ajax.component' => [

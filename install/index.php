@@ -97,6 +97,7 @@ class wc_core extends CModule
     function UnInstallFiles(): void
     {
         Directory::deleteDirectory($this->kernelDir . '/components/wc/admin.form.edit');
+        Directory::deleteDirectory($this->kernelDir . '/components/wc/ajax.component');
         Directory::deleteDirectory($this->kernelDir . '/js/wc/core');
         File::deleteFile($_SERVER['DOCUMENT_ROOT'] . '/ajax/component.php');
     }
@@ -132,7 +133,8 @@ class wc_core extends CModule
 
     private function getKernelDir(): string
     {
-        $kernelDir = Directory::isDirectoryExists($_SERVER['DOCUMENT_ROOT'] . '/local') ? '/local' : '/bitrix';
+        $kernelDir = strpos(__DIR__, '/local/modules/wc.core') ? '/local' : '/bitrix';
+
         return $_SERVER['DOCUMENT_ROOT'] . $kernelDir;
     }
 }
