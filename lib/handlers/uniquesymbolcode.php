@@ -9,13 +9,12 @@
  * AddEventHandler('iblock', 'OnBeforeIBlockSectionUpdate', [WC\Core\Handlers\UniqueSymbolCode::class, 'constructSection']);
  */
 
-
 namespace WC\Core\Handlers;
-
 
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Iblock\SectionTable;
 use Cutil;
+use WC\Core\Config;
 
 class UniqueSymbolCode
 {
@@ -48,11 +47,11 @@ class UniqueSymbolCode
     {
         if ($arFields['NAME']) {
             $code = $arFields['CODE'] ?: Cutil::translit($arFields['NAME'], LANGUAGE_ID, [
-                'max_len' => \WC\Core\Config::getOption('max_len'),
-                'change_case' => \WC\Core\Config::getOption('max_len'),
-                'replace_space' => \WC\Core\Config::getOption('max_len'),
-                'replace_other' => \WC\Core\Config::getOption('max_len'),
-                'delete_repeat_replace' => \WC\Core\Config::getOption('max_len'),
+                'max_len' => Config::getOption('max_len'),
+                'change_case' => Config::getOption('change_case'),
+                'replace_space' => Config::getOption('replace_space'),
+                'replace_other' => Config::getOption('replace_other'),
+                'delete_repeat_replace' => Config::getOption('delete_repeat_replace'),
             ]);
 
             $arFields['CODE'] = self::checkCode($code);
@@ -87,7 +86,7 @@ class UniqueSymbolCode
     public static function setDefaultSettings(): void
     {
         foreach (self::$defaultSettings as $key => $value) {
-            \WC\Core\Config::setOption($key, $value);
+            Config::setOption($key, $value);
         }
     }
 }
