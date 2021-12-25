@@ -13,7 +13,7 @@ class Logger
     public function __construct($logName = null)
     {
         $logName = $logName ?: self::FILE_NAME_DEFAULT;
-        $rootLogPath = $_SERVER['DOCUMENT_ROOT'] . '/upload/tmp/log/';
+        $rootLogPath = $_SERVER['DOCUMENT_ROOT'] . '/upload/log/';
         $logFilePath = $rootLogPath . $logName . '.log';
         $logDirPath = dirname($logFilePath);
 
@@ -21,7 +21,7 @@ class Logger
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $logDirPath));
         }
 
-        $this->logFile = fopen($logFilePath, 'wb');
+        $this->logFile = fopen($logFilePath, 'ab');
     }
 
     public function info($message, $data = null)
