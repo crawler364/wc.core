@@ -18,16 +18,21 @@ class UrnHandler
     /** @var HttpRequest|Request */
     private $request;
     /** @var string */
-    private $urn;
+    private $requestUrn;
     /** @var Server */
     private $server;
+    /** @var array|string|null */
+    private $requestUrnReal;
+    public const REQUEST_URN = 'REQUEST_URI'; // URN загружаемой страницы
+    public const REQUEST_URN_REAL = 'REQUEST_URI_REAL'; // URN виртуальной страницы
 
     public function __construct()
     {
         $this->context = Context::getCurrent();
         $this->request = $this->context->getRequest();
         $this->server = $this->context->getServer();
-        $this->urn = $this->server->get('REQUEST_URI');
+        $this->requestUrn = $this->server->get(self::REQUEST_URN);
+        $this->requestUrnReal = $this->server->get(self::REQUEST_URN_REAL) ?? '';
     }
 
     /**
@@ -39,18 +44,18 @@ class UrnHandler
             return;
         }
 
-        $rwRule = RwRuleManager::find(['QUERY' => $this->urn]);
+        $rwRule = RwRuleManager::find(['QUERY' => $this->requestUrn]);
 
         if (UrlRewriter::CheckPath($rwRule['PATH'])) {
-            if ($rule = RuleManager::getRuleByConditionUrn($this->urn)) {
+            if ($rule = RuleManager::getRuleByConditionUrn($this->requestUrn)) {
                 global $APPLICATION;
                 $response = $this->context->getResponse();
                 $cookies = $this->request->getCookieRawList()->getValues();
-                $this->server->set('REQUEST_URI', $rule['BASE_URN']['VALUE']);
-                $this->server->set('REQUEST_URI_REAL', $rule['CONDITION_URN']['VALUE']);
+                $this->server->set(self::REQUEST_URN, $rule['BASE_URN']['VALUE']);
+                $this->server->set(self::REQUEST_URN_REAL, $rule['CONDITION_URN']['VALUE']);
                 $this->context->initialize(new HttpRequest($this->server, [], [], [], $cookies), $response, $this->server);
                 $APPLICATION->reinitPath();
-            } elseif (($rule = RuleManager::getRuleByBaseUrn($this->urn)) && $rule['REDIRECT']['VALUE'] != null) {
+            } elseif (($rule = RuleManager::getRuleByBaseUrn($this->requestUrn)) && !empty($rule['REDIRECT']['VALUE'])) {
                 LocalRedirect($rule['CONDITION_URN']['VALUE'], false, '301 Moved Permanently');
             }
         }
@@ -65,34 +70,38 @@ class UrnHandler
             return;
         }
 
-        global $APPLICATION;
-
-        $urn = $this->server->get('REQUEST_URI_REAL') ?? '';
-        $rule = RuleManager::getRuleByConditionUrn($urn);
+        $rule = RuleManager::getRuleByBaseUrn($this->requestUrn);
 
         if (empty($rule)) {
             return;
         }
 
-        if (!empty($rule['TITLE']['VALUE'])) {
-            $APPLICATION->SetPageProperty('title', $rule['TITLE']['VALUE']);
-            $APPLICATION->SetTitle($rule['TITLE']['VALUE']);
-        }
+        if (
+            (empty($rule['CONDITION_URN']['VALUE']) && empty($rule['REDIRECT']['VALUE'])) || // переписать для BASE_URN
+            (!empty($this->requestUrnReal) && $this->requestUrnReal === $rule['CONDITION_URN']['VALUE']) // переписать для CONDITION_URN
+        ) {
+            global $APPLICATION;
 
-        if (!empty($rule['META_KEYWORDS']['VALUE'])) {
-            $APPLICATION->SetPageProperty('keywords', $rule['KEYWORDS']['VALUE']);
-        }
+            if (!empty($rule['TITLE']['VALUE'])) {
+                $APPLICATION->SetPageProperty('title', $rule['TITLE']['VALUE']);
+                $APPLICATION->SetTitle($rule['TITLE']['VALUE']);
+            }
 
-        if (!empty($rule['META_DESCRIPTION']['VALUE'])) {
-            $APPLICATION->SetPageProperty('description', $rule['META_DESCRIPTION']['VALUE']);
-        }
+            if (!empty($rule['META_KEYWORDS']['VALUE'])) {
+                $APPLICATION->SetPageProperty('keywords', $rule['KEYWORDS']['VALUE']);
+            }
 
-        if (!empty($rule['H1']['VALUE'])) {
-            $APPLICATION->AddViewContent('sef_h1', $rule['H1']['VALUE']);
-        }
+            if (!empty($rule['META_DESCRIPTION']['VALUE'])) {
+                $APPLICATION->SetPageProperty('description', $rule['META_DESCRIPTION']['VALUE']);
+            }
 
-        if (!empty($rule['DESCRIPTION']['~VALUE']['TEXT'])) {
-            $APPLICATION->AddViewContent('sef_description', $rule['DESCRIPTION']['~VALUE']['TEXT']);
+            if (!empty($rule['H1']['VALUE'])) {
+                $APPLICATION->AddViewContent('sef_h1', $rule['H1']['VALUE']);
+            }
+
+            if (!empty($rule['DESCRIPTION']['~VALUE']['TEXT'])) {
+                $APPLICATION->AddViewContent('sef_description', $rule['DESCRIPTION']['~VALUE']['TEXT']);
+            }
         }
     }
 }
