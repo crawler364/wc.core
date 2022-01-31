@@ -12,9 +12,9 @@ use Bitrix\Main\Data\Cache;
 class RuleManager
 {
     private const IBLOCK_CODE = 'urltosefrewriter';
-    private const RULE_ID = 'ID';
-    private const RULE_CONDITION_URN = 'PROPERTY_CONDITION_URN';
-    private const RULE_BASE_URN = 'PROPERTY_BASE_URN';
+    private const RULE_ID_KEY = 'ID';
+    private const RULE_CONDITION_URN_KEY = 'PROPERTY_CONDITION_URN';
+    private const RULE_BASE_URN_KEY = 'PROPERTY_BASE_URN';
 
     /**
      * Пересоздать все правила из ИБ в urlrewrite.php
@@ -50,6 +50,8 @@ class RuleManager
         } elseif ($cache->startDataCache()) {
             $rule = [];
 
+            \Bitrix\Main\Loader::includeModule('iblock');
+
             $res = \CIBlockElement::GetList(
                 [],
                 [
@@ -75,7 +77,7 @@ class RuleManager
 
     public static function getRuleById(int $id): array
     {
-        $filter = [self::RULE_ID => $id];
+        $filter = [self::RULE_ID_KEY => $id];
 
         return self::getRule($filter);
     }
@@ -85,7 +87,7 @@ class RuleManager
         $rule = [];
 
         if (!empty($urn)) {
-            $rule = self::getRule([self::RULE_CONDITION_URN => $urn]);
+            $rule = self::getRule([self::RULE_CONDITION_URN_KEY => $urn]);
         }
 
         return $rule;
@@ -96,7 +98,7 @@ class RuleManager
         $rule = [];
 
         if (!empty($urn)) {
-            $rule = self::getRule([self::RULE_BASE_URN => $urn]);
+            $rule = self::getRule([self::RULE_BASE_URN_KEY => $urn]);
         }
 
         return $rule;
@@ -140,11 +142,11 @@ class RuleManager
     private static function getCacheTags($rule): array
     {
         return [
-            ['KEY' => self::RULE_ID, 'VALUE' => $rule['ID']],
-            ['KEY' => self::RULE_CONDITION_URN, 'VALUE' => $rule['CONDITION_URN']['VALUE']],
-            ['KEY' => self::RULE_BASE_URN, 'VALUE' => $rule['BASE_URN']['VALUE']],
-            ['KEY' => self::RULE_CONDITION_URN, 'VALUE' => $rule['BASE_URN']['VALUE']],
-            ['KEY' => self::RULE_BASE_URN, 'VALUE' => $rule['CONDITION_URN']['VALUE']],
+            ['KEY' => self::RULE_ID_KEY, 'VALUE' => $rule['ID']],
+            ['KEY' => self::RULE_CONDITION_URN_KEY, 'VALUE' => $rule['CONDITION_URN']['VALUE']],
+            ['KEY' => self::RULE_BASE_URN_KEY, 'VALUE' => $rule['BASE_URN']['VALUE']],
+            ['KEY' => self::RULE_CONDITION_URN_KEY, 'VALUE' => $rule['BASE_URN']['VALUE']],
+            ['KEY' => self::RULE_BASE_URN_KEY, 'VALUE' => $rule['CONDITION_URN']['VALUE']],
         ];
     }
 

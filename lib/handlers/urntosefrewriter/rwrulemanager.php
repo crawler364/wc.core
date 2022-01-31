@@ -88,7 +88,9 @@ class RwRuleManager
         foreach ($properties as $key => $property) {
             switch ($key) {
                 case 'CONDITION_URN':
-                    $rule['CONDITION'] = self::formatUrn($property['VALUE']);
+                    if (!empty($property['VALUE'])) {
+                        $rule['CONDITION'] = self::formatUrn($property['VALUE']);
+                    }
                     break;
                 case 'BASE_URN':
                     $rewriteRule = self::find(['QUERY' => $property['VALUE']]);
@@ -128,6 +130,10 @@ class RwRuleManager
     private static function validate(array $rule): bool
     {
         if (empty($rule['CONDITION'])) {
+            return false;
+        }
+
+        if (empty($rule['PATH'])) {
             return false;
         }
 

@@ -13,26 +13,26 @@ use Bitrix\Main\UrlRewriter;
  */
 class UrnHandler
 {
+public const REQUEST_URN = 'REQUEST_URI';
+public const REQUEST_URN_REAL = 'REQUEST_URI_REAL';
     /** @var Context */
     private $context;
     /** @var HttpRequest|Request */
     private $request;
     /** @var string */
     private $requestUrn;
-    /** @var Server */
-    private $server;
-    /** @var array|string|null */
-    private $requestUrnReal;
-    public const REQUEST_URN = 'REQUEST_URI'; // URN загружаемой страницы
-    public const REQUEST_URN_REAL = 'REQUEST_URI_REAL'; // URN виртуальной страницы
+        /** @var Server */
+    private $server; // URN загружаемой страницы
+        /** @var array|string|null */
+    private $requestUrnReal; // URN виртуальной страницы
 
     public function __construct()
     {
         $this->context = Context::getCurrent();
         $this->request = $this->context->getRequest();
         $this->server = $this->context->getServer();
-        $this->requestUrn = $this->server->get(self::REQUEST_URN);
-        $this->requestUrnReal = $this->server->get(self::REQUEST_URN_REAL) ?? '';
+        $this->requestUrn = $this->getRequestUrn();
+        $this->requestUrnReal = $this->getRequestUrnReal();
     }
 
     /**
@@ -56,7 +56,7 @@ class UrnHandler
                 $this->context->initialize(new HttpRequest($this->server, [], [], [], $cookies), $response, $this->server);
                 $APPLICATION->reinitPath();
             } elseif (($rule = RuleManager::getRuleByBaseUrn($this->requestUrn)) && !empty($rule['REDIRECT']['VALUE'])) {
-                LocalRedirect($rule['CONDITION_URN']['VALUE'], false, '301 Moved Permanently');
+                LocalRedirect($this->getRedirectUri($rule), false, '301 Moved Permanently');
             }
         }
     }
@@ -103,5 +103,28 @@ class UrnHandler
                 $APPLICATION->AddViewContent('sef_description', $rule['DESCRIPTION']['~VALUE']['TEXT']);
             }
         }
+    }
+
+    private function getRequestUrnReal()
+    {
+        return $this->server->get(self::REQUEST_URN_REAL) ?? '';
+    }
+
+    private function getRequestUrn()
+    {
+        return strtok($this->server->get(self::REQUEST_URN), '?');
+    }
+
+    private function getRedirectUri($rule)
+    {
+        $getParams = $this->server->get('QUERY_STRING');
+
+        if (!empty($getParams)) {
+            $redirectUri = $rule['CONDITION_URN']['VALUE'] . '?' . $this->server->get('QUERY_STRING');
+        } else {
+            $redirectUri = $rule['CONDITION_URN']['VALUE'];
+        }
+
+        return $redirectUri;
     }
 }
