@@ -13,17 +13,17 @@ use Bitrix\Main\UrlRewriter;
  */
 class UrnHandler
 {
-public const REQUEST_URN = 'REQUEST_URI';
-public const REQUEST_URN_REAL = 'REQUEST_URI_REAL';
+    public const REQUEST_URN = 'REQUEST_URI';
+    public const REQUEST_URN_REAL = 'REQUEST_URI_REAL';
     /** @var Context */
     private $context;
     /** @var HttpRequest|Request */
     private $request;
     /** @var string */
     private $requestUrn;
-        /** @var Server */
+    /** @var Server */
     private $server; // URN загружаемой страницы
-        /** @var array|string|null */
+    /** @var array|string|null */
     private $requestUrnReal; // URN виртуальной страницы
 
     public function __construct()
