@@ -7,6 +7,7 @@ use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\IO\Directory;
 use Bitrix\Main\SystemException;
 use \Bitrix\Main\IO\File;
+use Bitrix\Main\Text\Encoding;
 
 Loc::loadMessages(__FILE__);
 
@@ -29,7 +30,7 @@ class wc_core extends CModule
         }
 
         $this->MODULE_NAME = Loc::getMessage('WC_CORE_MODULE_NAME');
-        $this->MODULE_DESCRIPTION = Loc::getMessage('WC_CORE_MODULE_DESCRIPTION');
+        $this->MODULE_DESCRIPTION = Encoding::convertEncodingToCurrent(Loc::getMessage('WC_CORE_MODULE_DESCRIPTION'));
         $this->PARTNER_NAME = Loc::getMessage('WC_CORE_PARTNER_NAME');
         $this->PARTNER_URI = Loc::getMessage('WC_CORE_PARTNER_URI');
 

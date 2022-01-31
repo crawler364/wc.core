@@ -1,22 +1,8 @@
 # Модуль для 1С-Битрикс WC.Core
 
-### wc:ajax.component - компонент для ajax загрузки других компонентов
-#### Пример использования
-```php
-Bitrix\Main\Loader::includeModule('wc.core');
-```
+### Состав
 
-```js
-let data = {
-    COMPONENT_NAME: 'bitrix:catalog.section',
-    COMPONENT_TEMPLATE: '',
-    COMPONENT_PARAMS: {
-        'IBLOCK_ID': 2,
-    },
-};
-
-WC.Ajax.Component.load(data).then((response) => {
-    $(document.body).append(response);
-});
-
-```
+* wc:ajax.component - компонент для ajax загрузки других компонентов.
+* UrnToSefRewriter - SEO инструмент для управления тегами и перезаписи URN страниц компонентов с ЧПУ.
+* UniqueSymbolCode - уникальная транслитерация символьного кода.
+* stuff
