@@ -17,7 +17,7 @@
 * Описание - DESCRIPTION
 
 Пример ИБ и свойств
-* ИБ - https://crawler364.tinytake.com/msc/NjQ3MzIzOF8xODkyMjY3MA
+* ИБ - https://crawler364.tinytake.com/msc/NjQ3MzM1MV8xODkyMjg0NQ
 * Свойства ИБ - https://crawler364.tinytake.com/msc/NjQ3MzI0M18xODkyMjY3NQ
 * Пример элемента - https://crawler364.tinytake.com/msc/NjQ3MzIzMl8xODkyMjY2NA
 
