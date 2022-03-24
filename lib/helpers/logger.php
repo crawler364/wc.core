@@ -12,9 +12,9 @@ class Logger
 
     public function __construct($logName = null)
     {
-        $logName = $logName ?: self::FILE_NAME_DEFAULT;
+        $logName = ($logName ?: self::FILE_NAME_DEFAULT) . '_' . date('Ymd') . '.log';
         $rootLogPath = $_SERVER['DOCUMENT_ROOT'] . '/upload/log/';
-        $logFilePath = $rootLogPath . $logName . '.log';
+        $logFilePath = $rootLogPath . $logName;
         $logDirPath = dirname($logFilePath);
 
         if (!is_dir($logDirPath) && !mkdir($logDirPath, 0777, true) && !is_dir($logDirPath)) {
